@@ -25,6 +25,7 @@ class BattleViewController: UIViewController {
     
     var player: Character!
     var enemy: Character!
+    
     var playerHP = 100
     var playerMP = 0
     var enemyHP = 200
@@ -125,7 +126,7 @@ class BattleViewController: UIViewController {
         
         var finishMessage: String = ""
         if isPlayerWin {
-            techMonManager.playSE(fileName: "SE_fanfarew")
+            techMonManager.playSE(fileName: "SE_fanfare")
             finishMessage = "勇者の勝利"
         } else {
             techMonManager.playSE(fileName: "SE_gameover")
@@ -148,16 +149,17 @@ class BattleViewController: UIViewController {
             player.currentTP += 10
             if player.currentTP >= player.maxTP {
                 player.currentTP = player.maxTP
-            
+                
 //            enemyHP -= 30
 //            playerMP = 0
-//
+
 //            enemyHPLabel.text = "\(enemyHP) / 200"
 //            playerMPLabel.text = "\(playerMP) / 20"
 //
 //            if enemyHP <= 0 {
 //                finishBattle(vanishImageView: enemyImageView, isPlayerWin: true)
             }
+            
             player.currentMP = 0
             judgeBattle()
         }
