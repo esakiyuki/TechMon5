@@ -26,10 +26,15 @@ class BattleViewController: UIViewController {
     var player: Character!
     var enemy: Character!
     
-    var playerHP = 100
-    var playerMP = 0
-    var enemyHP = 200
-    var enemyMP = 0
+//    var playerHP = 100
+//    var playerMP = 0
+//    var enemyHP = 200
+//    var enemyMP = 0
+    
+//    var player.currentHP = 100
+//    var player.currentMP = 0
+//    var enemy.currentHP = 200
+//    var enemy.currentMP = 0
     
     var gameTimer: Timer!
     var isPlayerAttackAvailable: Bool = true
@@ -42,13 +47,13 @@ class BattleViewController: UIViewController {
         
         playerNameLabel.text = "勇者"
         playerImageView.image = UIImage(named: "yusya.png")
-        playerHPLabel.text = "\(playerHP) / 100"
-        playerMPLabel.text = "\(playerMP) / 20"
+        playerHPLabel.text = "\(player.currentHP) / 100"
+        playerMPLabel.text = "\(player.currentMP) / 20"
         
         enemyNameLabel.text = "龍"
         enemyImageView.image = UIImage(named: "monster.png")
-        enemyHPLabel.text = "\(enemyHP) / 200"
-        enemyMPLabel.text = "\(enemyMP) / 35"
+        enemyHPLabel.text = "\(enemy.currentHP) / 200"
+        enemyMPLabel.text = "\(enemy.currentMP) / 35"
         
         gameTimer = Timer.scheduledTimer(
             timeInterval: 0.1,
@@ -81,31 +86,33 @@ class BattleViewController: UIViewController {
     }
     
     @objc func updateGame() {
-        playerMP += 1
-        if playerMP >= 20 {
+        player.currentMP += 1
+        if player.currentMP >= 20 {
             isPlayerAttackAvailable = true
-            playerMP = 20
+            player.currentMP = 20
         } else {
             isPlayerAttackAvailable = false
         }
-        
-        enemyMP += 1
-        if enemyMP >= 35 {
+
+        enemy.currentMP += 1
+        if enemy.currentMP >= 35 {
             enemyAttack()
-            enemyMP = 0
+            enemy.currentMP = 0
         }
         
-        playerMPLabel.text = "\(playerMP) / 20"
-        enemyMPLabel.text = "\(enemyMP) / 35"
+        updateUI()
+//
+//        playerMPLabel.text = "\(player.currentMP) / 20"
+//        enemyMPLabel.text = "\(enemy.currentMP) / 35"
     }
     
     func enemyAttack() {
         techMonManager.damageAnimation(imageView: playerImageView)
         techMonManager.playSE(fileName: "SE_attack")
         
-        playerHP -= 20
-        playerHPLabel.text = "\(playerHP) / 100"
-        if playerHP <= 0 {
+        player.currentHP -= 20
+        playerHPLabel.text = "\(player.currentHP) / 100"
+        if player.currentHP <= 0 {
             finishBattle(vanishImageView: playerImageView, isPlayerWin: false)
         }
     }
@@ -141,6 +148,7 @@ class BattleViewController: UIViewController {
     
     @IBAction func attackAction() {
         if isPlayerAttackAvailable {
+            
             techMonManager.damageAnimation(imageView: enemyImageView)
             techMonManager.playSE(fileName: "SE_attack")
             
@@ -150,19 +158,20 @@ class BattleViewController: UIViewController {
             if player.currentTP >= player.maxTP {
                 player.currentTP = player.maxTP
                 
-//            enemyHP -= 30
-//            playerMP = 0
-
-//            enemyHPLabel.text = "\(enemyHP) / 200"
-//            playerMPLabel.text = "\(playerMP) / 20"
+//            enemy.currentHP -= 30
+//            player.currentMP = 0
 //
-//            if enemyHP <= 0 {
+//            enemyHPLabel.text = "\(enemy.currentHP) / 200"
+//            playerMPLabel.text = "\(player.currentMP) / 20"
+//
+//            if enemy.currentHP <= 0 {
 //                finishBattle(vanishImageView: enemyImageView, isPlayerWin: true)
+//            }
             }
-            
             player.currentMP = 0
             judgeBattle()
         }
+        
     }
     
     @IBAction func tameruAction() {
@@ -173,6 +182,7 @@ class BattleViewController: UIViewController {
                 player.currentTP = player.maxTP
             }
             player.currentMP = 0
+            updateUI()
         }
     }
     
@@ -187,6 +197,7 @@ class BattleViewController: UIViewController {
             }
             player.currentMP = 0
             judgeBattle()
+            updateUI()
         }
     }
     
