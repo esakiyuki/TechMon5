@@ -168,6 +168,7 @@ class BattleViewController: UIViewController {
 //                finishBattle(vanishImageView: enemyImageView, isPlayerWin: true)
 //            }
             }
+            
             player.currentMP = 0
             judgeBattle()
         }
